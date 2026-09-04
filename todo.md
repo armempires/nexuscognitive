@@ -1,0 +1,43 @@
+# Project TODO
+
+- [x] Criar landing page premium com proposta de valor, benefícios, privacidade e CTA para iniciar o teste
+- [x] Criar fluxo de teste com 25–30 questões de raciocínio lógico, visual, verbal e padrões, sem matemática complexa
+- [x] Exibir barra de progresso, número da questão e tempo estimado/duração visível durante o teste
+- [x] Persistir sessão do teste, respostas e tempo por questão com proteção contra perda acidental de progresso via armazenamento local
+- [x] Implementar cálculo do score considerando acertos, categorias e tempo de resposta
+- [x] Implementar faixas interpretativas de classificação do Q.I. com linguagem responsável e não diagnóstica
+- [x] Criar formulário pós-teste para nome, e-mail e telefone
+- [x] Preparar tela e bloqueio de validação por SMS; envio real permanece desativado sem provedor
+- [x] Bloquear pagamento até a confirmação do telefone; botão permanece desabilitado sem SMS configurado
+- [x] Preparar página e bloqueio de checkout Stripe; cobrança real permanece desativada sem configuração
+- [x] Bloquear resultado completo até confirmação do pagamento; botão permanece desabilitado sem Stripe configurado
+- [x] Criar página de resultado com score, faixa, gráfico por categoria e perfil cognitivo
+- [x] Criar recomendações alinhadas ao perfil para profissões e cursos
+- [x] Preparar conteúdo e aviso do relatório por e-mail; envio real permanece desativado sem provedor
+- [x] Criar testes Vitest para score, classificação, validação de acesso e fluxo de confirmação
+- [x] Revisar responsividade, acessibilidade, estados de carregamento e mensagens de erro
+- [x] Executar verificação de tipos, testes e revisão visual do fluxo completo
+- [x] Manter SMS real desativado e preparar a etapa de validação para futura ativação com provedor
+- [x] Manter envio de e-mail real desativado e preparar o relatório para futura ativação com provedor
+- [x] Exibir avisos claros de configuração pendente sem simular códigos, mensagens ou envios reais
+- [x] Ajustar score para ponderar desempenho por categoria, além de acertos e tempo
+- [x] Manter etapas de SMS e Stripe explicitamente bloqueadas até que as APIs sejam configuradas
+- [x] Tornar recomendações dinâmicas a partir do perfil e do desempenho por categoria
+- [x] Adicionar testes para bloqueios de acesso e estados de integração pendente
+- [x] Revisar o fluxo completo em mobile e desktop, incluindo estados de erro e acessibilidade
+- [x] Implementar perfil cognitivo calculado dinamicamente e usar esse perfil junto com categoryStats para gerar recomendações
+- [x] Adicionar testes Vitest para o estado bloqueado das integrações sem configuração
+- [x] Registrar revisão visual responsiva da interface principal em desktop e mobile
+- [x] Validar orientação para campos obrigatórios e integrações pendentes, com botões desabilitados sem configuração
+- [x] Persistir e restaurar o estágio do fluxo, metadados de retomada e tempo da questão atual
+- [x] Adicionar tela de código SMS desativada, estado de telefone confirmado e mensagem de indisponibilidade
+- [x] Estruturar um template de relatório de e-mail reutilizável, sem envio real
+- [x] Criar testes de fluxo para botões desabilitados e bloqueio de navegação sem integrações
+- [x] Adicionar validação acessível e mensagens explícitas para nome, e-mail e telefone
+- [x] Reescrever a primeira impressão explicando por que fazer o teste, para que ele serve e quais decisões pode apoiar
+- [x] Adicionar seção visual de benefícios práticos sem prometer diagnóstico ou precisão clínica
+- [x] Criar animação lúdica e interativa no hero com elementos de padrões, conexões e descoberta
+- [x] Adicionar microinterações, estados de hover/foco e respeito a prefers-reduced-motion
+- [x] Validar a nova landing page em desktop e mobile e salvar checkpoint da melhoria
+- [x] Adicionar estados visíveis de foco e teclado aos elementos interativos da nova landing page
+- [x] Salvar novo checkpoint após a melhoria animada e a validação desktop/mobile

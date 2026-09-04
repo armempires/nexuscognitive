@@ -1,0 +1,77 @@
+- generic [ref=e2]:
+  - region "Notifications alt+T"
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - button "NEXUS cognitive insight" [ref=e6] [cursor=pointer]:
+          - generic [ref=e18]:
+            - generic [ref=e19]: NEXUS
+            - generic [ref=e20]: cognitive insight
+        - generic [ref=e21]:
+          - generic [ref=e28]:
+            - generic [ref=e29]: 26 desafios
+            - generic [ref=e30]: ≈ 6 minutos
+            - generic [ref=e31]: experiência privada
+          - button "Desativar sons" [ref=e35] [cursor=pointer]
+      - generic [ref=e36]:
+        - generic [ref=e37]:
+          - generic [ref=e38]: 🔐
+          - paragraph [ref=e42]: Pagamento Seguro via Asaas
+          - heading "Desbloqueie seu Relatório" [level=2] [ref=e43]
+          - paragraph [ref=e44]: Pagamento único sem assinatura. Acesso imediato após confirmação.
+        - generic [ref=e45]:
+          - generic [ref=e47]:
+            - generic [ref=e48]:
+              - generic [ref=e49]:
+                - paragraph [ref=e50]: Relatório Nexus Completo
+                - generic [ref=e51]: Sem Recorrência
+              - paragraph [ref=e52]: Pontuação QI + Perfil Cognitivo Híbrido + Profissões
+            - generic [ref=e53]:
+              - paragraph [ref=e54]: R$ 19,90
+              - paragraph [ref=e55]: R$ 39,90
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - generic [ref=e58]: 🧠
+              - text: Score geral e faixa interpretativa de QI
+            - generic [ref=e59]:
+              - generic [ref=e60]: 📊
+              - text: Gráfico por dimensão cognitiva
+            - generic [ref=e61]:
+              - generic [ref=e62]: 🎯
+              - text: Perfil cognitivo híbrido personalizado
+            - generic [ref=e63]:
+              - generic [ref=e64]: 💼
+              - text: Profissões e cursos alinhados ao perfil
+            - generic [ref=e65]:
+              - generic [ref=e66]: 📧
+              - text: Relatório preparado para envio por e-mail
+          - generic [ref=e67]:
+            - generic [ref=e68]: Selecione a forma de pagamento
+            - generic [ref=e69]:
+              - button "⚡ PIX Instantâneo" [ref=e70] [cursor=pointer]
+              - button "💳 Cartão de Crédito" [ref=e77] [cursor=pointer]
+          - generic [ref=e123]: Edge Function returned a non-2xx status code
+          - generic [ref=e81]:
+            - generic [ref=e82]:
+              - generic [ref=e83]: Nome completo do pagador
+              - 'textbox "Ex: João da Silva" [ref=e84]': João Playwright
+            - generic [ref=e85]:
+              - generic [ref=e86]:
+                - generic [ref=e87]: E-mail
+                - textbox "seu@email.com" [ref=e88]: kitoaiagency@gmail.com
+              - generic [ref=e89]:
+                - generic [ref=e90]: CPF (exigido pela Asaas)
+                - textbox "000.000.000-00" [ref=e91]: 111.444.777-35
+            - button "Gerar PIX de R$ 19,90" [ref=e92] [cursor=pointer]
+          - generic [ref=e107]:
+            - text: Pagamento processado via
+            - strong [ref=e108]: Asaas
+        - generic [ref=e109]:
+          - generic [ref=e110]: Criptografia SSL 256-bit
+          - generic [ref=e114]: ·
+          - generic [ref=e115]: Avaliação 4.9/5
+          - generic [ref=e118]: ·
+          - generic [ref=e119]: Asaas Pagamentos
+      - generic [ref=e120]:
+        - generic [ref=e121]: © 2026 Nexus Cognitive Insight
+        - generic [ref=e122]: Privacidade · Uso responsável
