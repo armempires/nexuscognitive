@@ -49,6 +49,9 @@ export async function startServer() {
   });
 }
 
+const app = createApp();
+export default app;
+
 if (!process.env.VERCEL) {
   startServer().catch(console.error);
 }
