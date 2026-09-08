@@ -18,6 +18,19 @@ describe("useQuizLogic", () => {
     expect(result.current.answers).toEqual([]);
   });
 
+  it("restores saved answers and elapsed times", () => {
+    const { result } = renderHook(() => useQuizLogic(questions));
+    const answers = questions.slice(0, 3).map(question => question.answer);
+    const seconds = [8, 12, 20];
+
+    act(() => result.current.restoreQuiz(answers, seconds, 3));
+
+    expect(result.current.answers).toEqual(answers);
+    expect(result.current.seconds).toEqual(seconds);
+    expect(result.current.current).toBe(3);
+    expect(result.current.categoryStats.find(stat => stat.category === "Lógico")?.value).toBe(14);
+  });
+
   it("advances to next question on answer", () => {
     const { result } = renderHook(() => useQuizLogic(questions));
     act(() => result.current.startQuiz());
