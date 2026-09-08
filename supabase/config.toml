@@ -8,3 +8,5 @@ verify_jwt = true
 
 [functions.payment-status]
 verify_jwt = true
+[functions.force-confirm-payment]
+verify_jwt = true

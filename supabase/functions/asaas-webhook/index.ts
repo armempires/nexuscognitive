@@ -1,10 +1,12 @@
-import { json } from "../_shared/cors.ts";
+import { corsHeaders, handleOptions, json } from "../_shared/cors.ts";
 import { getAdminClient } from "../_shared/supabase.ts";
 
 const paidEvents = new Set(["PAYMENT_CONFIRMED", "PAYMENT_RECEIVED"]);
 const refusedEvents = new Set(["PAYMENT_OVERDUE", "PAYMENT_DELETED", "PAYMENT_REFUNDED", "PAYMENT_CHARGEBACK_REQUESTED"]);
 
 Deno.serve(async (request) => {
+  const options = handleOptions(request);
+  if (options) return options;
   if (request.method !== "POST") return json({ error: "Método não permitido" }, 405);
   const expectedToken = Deno.env.get("ASAAS_WEBHOOK_TOKEN");
   const receivedToken = request.headers.get("asaas-access-token") || request.headers.get("x-asaas-token");
