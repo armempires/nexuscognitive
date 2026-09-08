@@ -1,8 +1,11 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
-import path from "path";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const templateRoot = path.resolve(import.meta.dirname);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const templateRoot = __dirname;
 
 export default defineConfig({
   root: templateRoot,
