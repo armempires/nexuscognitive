@@ -86,7 +86,7 @@ export function registerEmailRoutes(app: Express) {
   });
 
   app.get("/api/certificate/validate/:token", (req: Request, res: Response) => {
-    const certificate = readCertificate(req.params.token);
+    const certificate = readCertificate(req.params.token as string);
     if (!certificate) {
       res.status(404).json({ valid: false, message: "Certificado inválido ou adulterado." });
       return;
@@ -104,7 +104,7 @@ export function registerEmailRoutes(app: Express) {
   });
 
   app.get("/api/certificate/download/:token", (req: Request, res: Response) => {
-    const certificate = readCertificate(req.params.token);
+    const certificate = readCertificate(req.params.token as string);
     if (!certificate) {
       res.status(404).send("Certificado inválido ou adulterado.");
       return;
