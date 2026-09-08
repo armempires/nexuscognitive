@@ -2,11 +2,19 @@
   "version": 2,
   "builds": [
     {
+      "src": "api/score-ring.tsx",
+      "use": "@vercel/node"
+    },
+    {
       "src": "dist/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
+    {
+      "src": "/api/score-ring",
+      "dest": "/api/score-ring.tsx"
+    },
     {
       "src": "/(.*)",
       "dest": "dist/index.js"

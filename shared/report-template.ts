@@ -6,6 +6,10 @@ export type CognitiveReportData = {
   profileDescription: string;
   categories: Array<{ name: string; value: number }>;
   recommendations: string[];
+  courses?: string[];
+  processingStyle?: string;
+  primaryCategory?: string;
+  secondaryCategory?: string;
 };
 
 export function buildCognitiveReportEmail(data: CognitiveReportData) {

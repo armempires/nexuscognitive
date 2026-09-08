@@ -1,5 +1,6 @@
 import { Express, Request, Response } from "express";
 import { sendReportEmail, getResendConfig, verifyResendDomain, checkResendAccountStatus } from "./emailService";
+import { readCertificate, renderCertificateHtml, sendCertificateEmail, type CertificateData } from "./certificateService";
 
 export function registerEmailRoutes(app: Express) {
   // Get Resend status
@@ -60,5 +61,58 @@ export function registerEmailRoutes(app: Express) {
         message: error.message || "Erro interno ao enviar e-mail.",
       });
     }
+  });
+
+  app.post("/api/email/send-certificate", async (req: Request, res: Response) => {
+    try {
+      const { email, certificateData } = req.body;
+
+      if (!email || !certificateData?.name || !certificateData?.testDate) {
+        res.status(400).json({
+          success: false,
+          message: "E-mail e dados do certificado são obrigatórios.",
+        });
+        return;
+      }
+
+      res.json(await sendCertificateEmail(email, certificateData as CertificateData));
+    } catch (error: any) {
+      console.error("Erro no envio do certificado:", error);
+      res.status(500).json({
+        success: false,
+        message: error.message || "Erro interno ao enviar certificado.",
+      });
+    }
+  });
+
+  app.get("/api/certificate/validate/:token", (req: Request, res: Response) => {
+    const certificate = readCertificate(req.params.token);
+    if (!certificate) {
+      res.status(404).json({ valid: false, message: "Certificado inválido ou adulterado." });
+      return;
+    }
+
+    res.json({
+      valid: true,
+      code: certificate.code,
+      name: certificate.data.name,
+      score: certificate.data.score,
+      classification: certificate.data.classification,
+      testDate: certificate.data.testDate,
+      signedBy: "Nexus Cognitive Insight",
+    });
+  });
+
+  app.get("/api/certificate/download/:token", (req: Request, res: Response) => {
+    const certificate = readCertificate(req.params.token);
+    if (!certificate) {
+      res.status(404).send("Certificado inválido ou adulterado.");
+      return;
+    }
+
+    res
+      .type("html")
+      .setHeader("Content-Disposition", `attachment; filename="certificado-nexus-${certificate.code}.html"`)
+      .send(renderCertificateHtml(certificate));
   });
 }

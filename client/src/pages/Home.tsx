@@ -26,6 +26,7 @@ interface StoredSession {
   phoneConfirmed?: boolean;
   emailConfirmed?: boolean;
   questionStarted?: number;
+  startedAt?: number;
 }
 
 const categoryColors: Record<Category, string> = {
@@ -57,8 +58,7 @@ export default function Home() {
         localStorage.setItem("nexus-quiz-session", JSON.stringify(cleaned));
         setStage(data.stage as Stage);
       }
-      quiz.setCurrent(data.current || 0);
-      quiz.startQuiz();
+      quiz.restoreQuiz(data.answers || [], data.seconds || [], data.current || 0, data.startedAt);
       setName(data.name || "");
       setEmail(data.email || "");
       setEmailConfirmed(data.emailConfirmed || false);
@@ -77,6 +77,7 @@ export default function Home() {
       email,
       emailConfirmed: emailConfirmed,
       questionStarted: quiz.questionStarted,
+      startedAt: quiz.startedAt,
     };
     localStorage.setItem("nexus-quiz-session", JSON.stringify(data));
   }, [stage, quiz.current, quiz.answers, quiz.seconds, name, email, emailConfirmed, quiz.questionStarted]);

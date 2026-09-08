@@ -153,6 +153,10 @@ export function ResultPage({
             profileDescription: profile.description,
             categories: categoryStats.map((c) => ({ name: c.category, value: c.value })),
             recommendations: profile.careers || [],
+            courses: profile.courses || [],
+            processingStyle: profile.processingStyle,
+            primaryCategory: profile.primaryCategory,
+            secondaryCategory: profile.secondaryCategory,
           },
         }),
       });

@@ -15,13 +15,31 @@ export function useQuizLogic(questions: Question[]) {
   const [seconds, setSeconds] = useState<number[]>([]);
   const [current, setCurrent] = useState(0);
   const [questionStarted, setQuestionStarted] = useState(Date.now());
+  const [startedAt, setStartedAt] = useState(Date.now());
 
   const startQuiz = useCallback(() => {
     setCurrent(0);
     setAnswers([]);
     setSeconds([]);
+    setStartedAt(Date.now());
     setQuestionStarted(Date.now());
   }, []);
+
+  const restoreQuiz = useCallback(
+    (
+      savedAnswers: number[],
+      savedSeconds: number[],
+      savedCurrent: number,
+      savedStartedAt?: number,
+    ) => {
+      setAnswers(savedAnswers);
+      setSeconds(savedSeconds);
+      setCurrent(savedCurrent);
+      setStartedAt(savedStartedAt || Date.now());
+      setQuestionStarted(Date.now());
+    },
+    []
+  );
 
   const answerQuestion = useCallback(
     (option: number) => {
@@ -78,7 +96,9 @@ export function useQuizLogic(questions: Question[]) {
     seconds,
     current,
     questionStarted,
+    startedAt,
     startQuiz,
+    restoreQuiz,
     answerQuestion,
     result,
     band,
