@@ -1,77 +1,39 @@
-import { ImageResponse } from "@vercel/og";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import sharp from "sharp";
 
-export const config = {
-  runtime: "edge",
-};
-
-export default function handler(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const score = Number(searchParams.get("score") || "0");
-  const max = Number(searchParams.get("max") || "145");
-  const label = searchParams.get("label") || "";
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  const score = Number(req.query.score || 0);
+  const max = Number(req.query.max || 145);
+  const label = String(req.query.label || "");
   const safeScore = Number.isFinite(score) ? Math.max(0, score) : 0;
   const safeMax = Number.isFinite(max) && max > 0 ? max : 145;
-  const angle = Math.round(Math.max(0, Math.min(1, safeScore / safeMax)) * 360);
+  const radius = 112;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference * (1 - Math.min(1, safeScore / safeMax));
+  const escapedLabel = label.replace(/[&<>\"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[character] || character);
 
-  return new ImageResponse(
-    <div
-      style={{
-        width: 360,
-        height: 360,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "transparent",
-      }}
-    >
-      <div
-        style={{
-          width: 320,
-          height: 320,
-          borderRadius: "50%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: `conic-gradient(#f6c66a ${angle}deg, #2a2733 ${angle}deg 360deg)`,
-        }}
-      >
-        <div
-          style={{
-            width: 250,
-            height: 250,
-            borderRadius: "50%",
-            background: "#211e2d",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <div style={{ display: "flex", color: "#f6c66a", fontSize: 90, fontWeight: 800 }}>
-            {String(safeScore)}
-          </div>
-          <div style={{ display: "flex", color: "#777184", fontSize: 24, marginTop: 6 }}>
-            / {String(safeMax)}
-          </div>
-          {label ? (
-            <div
-              style={{
-                display: "flex",
-                marginTop: 18,
-                padding: "10px 20px",
-                borderRadius: 999,
-                background: "#f6c66a33",
-                color: "#f6c66a",
-                fontSize: 22,
-                fontWeight: 700,
-              }}
-            >
-              {label}
-            </div>
-          ) : null}
-        </div>
-      </div>
-    </div>,
-    { width: 360, height: 360 },
-  );
+  const svg = `<svg width="360" height="360" xmlns="http://www.w3.org/2000/svg">
+    <rect width="360" height="360" fill="#211e2d"/>
+    <circle cx="180" cy="145" r="${radius}" fill="none" stroke="#2a2733" stroke-width="24"/>
+    <circle cx="180" cy="145" r="${radius}" fill="none" stroke="#f6c66a" stroke-width="24" stroke-linecap="round" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" transform="rotate(-90 180 145)"/>
+    <text x="180" y="139" text-anchor="middle" fill="#f6c66a" font-family="Arial,sans-serif" font-size="64" font-weight="800">${safeScore}</text>
+    <text x="180" y="167" text-anchor="middle" fill="#777184" font-family="Arial,sans-serif" font-size="18">/ ${safeMax}</text>
+    ${escapedLabel ? `<rect x="58" y="282" width="244" height="42" rx="21" fill="#f6c66a33"/><text x="180" y="309" text-anchor="middle" fill="#f6c66a" font-family="Arial,sans-serif" font-size="17" font-weight="700">${escapedLabel}</text>` : ""}
+  </svg>`;
+
+  try {
+    const png = await sharp(Buffer.from(svg)).png().toBuffer();
+    res.setHeader("Content-Type", "image/png");
+    res.setHeader("Cache-Control", "public, max-age=3600");
+    res.status(200).send(png);
+  } catch (error) {
+    console.error("Erro ao gerar score-ring:", error);
+    res.status(500).json({ error: "Não foi possível gerar o score." });
+  }
 }
