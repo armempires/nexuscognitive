@@ -1,5 +1,5 @@
-import { corsHeaders, handleOptions, json } from "./_shared/cors.ts";
-import { getAdminClient } from "./_shared/supabase.ts";
+import { corsHeaders, handleOptions, json } from "./shared/cors.ts";
+import { getAdminClient } from "./shared/supabase.ts";
 
 function buildCognitiveReportHtml(data: any): string {
   const colors: Record<string, string> = {
