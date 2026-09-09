@@ -1,5 +1,5 @@
-import { corsHeaders, handleOptions, json } from "../_shared/cors.ts";
-import { getAdminClient } from "../_shared/supabase.ts";
+import { corsHeaders, handleOptions, json } from "./_shared/cors.ts";
+import { getAdminClient } from "./_shared/supabase.ts";
 
 Deno.serve(async (request) => {
   const options = handleOptions(request);
