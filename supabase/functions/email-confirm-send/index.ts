@@ -22,6 +22,14 @@ function validEmail(value: unknown) {
   return typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
 
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+
+function getAdminClient() {
+  const url = Deno.env.get("SUPABASE_URL");
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!url || !serviceRoleKey) throw new Error("Supabase service role não configurado");
+  return createClient(url, serviceRoleKey, { auth: { persistSession: false } });
+}
 Deno.serve(async (request) => {
   const options = handleOptions(request);
   if (options) return options;
