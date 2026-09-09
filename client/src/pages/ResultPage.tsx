@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getSupabaseClient } from "@/lib/supabase";
 import { ArrowRight, Mail, RefreshCw, Send, CheckCircle2, AlertCircle } from "lucide-react";
 import { categoryColors } from "@/data/questions";
 import type { CategoryStat, Profile, ScoreBand } from "@shared/qi-score";
@@ -140,10 +141,8 @@ export function ResultPage({
     setEmailStatus(null);
 
     try {
-      const response = await fetch("/api/email/send-report", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const { data, error } = await getSupabaseClient().functions.invoke("email-send-report", {
+        body: {
           email: emailToUse,
           reportData: {
             name: name || "Explorador",
@@ -158,10 +157,10 @@ export function ResultPage({
             secondaryCategory: profile.secondaryCategory,
             courses: profile.courses,
           },
-        }),
+        },
       });
 
-      const data = await response.json();
+      if (error) throw error;
       setSendingEmail(false);
 
       if (data.success) {

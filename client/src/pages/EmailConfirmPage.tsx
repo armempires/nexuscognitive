@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Mail, RefreshCw, CheckCircle2, AlertCircle } from "lucide-react";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
+import { getSupabaseClient } from "@/lib/supabase";
 
 interface EmailConfirmPageProps {
   email: string;
@@ -27,13 +28,11 @@ export function EmailConfirmPage({
     setSending(true);
     setStatus(null);
     try {
-      const res = await fetch("/api/email-confirm/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+      const { data, error } = await getSupabaseClient().functions.invoke("email-confirm-send", {
+        body: { email },
       });
-      const data = await res.json();
-      if (data.success) {
+      if (error) throw error;
+      if (data?.success) {
         setStatus({
           type: "success",
           message: data.isSimulated
@@ -42,7 +41,7 @@ export function EmailConfirmPage({
         });
         setCooldown(60);
       } else {
-        setStatus({ type: "error", message: data.message || "Erro ao enviar código." });
+        setStatus({ type: "error", message: data?.message || "Erro ao enviar código." });
       }
     } catch {
       setStatus({ type: "error", message: "Erro de conexão. Tente novamente." });
@@ -66,16 +65,14 @@ export function EmailConfirmPage({
     setVerifying(true);
     setStatus(null);
     try {
-      const res = await fetch("/api/email-confirm/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code }),
+      const { data, error } = await getSupabaseClient().functions.invoke("email-confirm-verify", {
+        body: { email, code },
       });
-      const data = await res.json();
-      if (data.success) {
+      if (error) throw error;
+      if (data?.success) {
         onConfirmed();
       } else {
-        setStatus({ type: "error", message: data.message || "Código inválido." });
+        setStatus({ type: "error", message: data?.message || "Código inválido." });
       }
     } catch {
       setStatus({ type: "error", message: "Erro de conexão. Tente novamente." });

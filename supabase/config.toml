@@ -10,3 +10,12 @@ verify_jwt = true
 verify_jwt = true
 [functions.force-confirm-payment]
 verify_jwt = true
+
+[functions.email-confirm-send]
+verify_jwt = false
+
+[functions.email-confirm-verify]
+verify_jwt = false
+
+[functions.email-send-report]
+verify_jwt = false
