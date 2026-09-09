@@ -1,38 +1,32 @@
-// --- inlined shared/cors.ts ---
-export const corsHeaders = {
+const corsHeaders = {
   "Access-Control-Allow-Origin": Deno.env.get("APP_ORIGIN") || "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
 };
 
-export function json(data: unknown, status = 200) {
+function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 }
 
-export function handleOptions(request: Request) {
-  return request.method === "OPTIONS" ? new Response("ok", { headers: corsHeaders }) : null;
+function handleOptions(request: Request) {
+  if (request.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+  return null;
 }
-
-// --- inlined shared/supabase.ts ---
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
-
-export function getAdminClient() {
-  const url = Deno.env.get("SUPABASE_URL");
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  if (!url || !serviceRoleKey) throw new Error("Supabase service role não configurado");
-  return createClient(url, serviceRoleKey, { auth: { persistSession: false } });
-}
-
 
 Deno.serve(async (request) => {
   const options = handleOptions(request);
   if (options) return options;
-  if (request.method !== "POST") return json({ error: "Método não permitido" }, 405);
 
   try {
+    if (request.method !== "POST") {
+      return json({ error: "Método não permitido" }, 405);
+    }
+
     const body = await request.json();
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
     const code = typeof body.code === "string" ? body.code.replace(/\D/g, "").slice(0, 6) : "";
