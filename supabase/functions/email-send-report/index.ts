@@ -59,7 +59,7 @@ function buildCognitiveReportHtml(data: any): string {
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Seu relatório Nexus</title>
   <style>
     @media only screen and (max-width:620px){
@@ -152,49 +152,7 @@ function buildCognitiveReportHtml(data: any): string {
 </html>`;
 }
 
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
-
-function getAdminClient() {
-  const url = Deno.env.get("SUPABASE_URL");
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  if (!url || !serviceRoleKey) throw new Error("Supabase service role não configurado");
-  return createClient(url, serviceRoleKey, { auth: { persistSession: false } });
-}
 Deno.serve(async (request) => {
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-  };
-
-  if (request.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
-  }
-
-  try {
-    const makeResponse = (data: unknown, status = 200) => {
-      return new Response(JSON.stringify(data), {
-        status,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    };
-
-    const originalJson = (data: unknown, status = 200) => makeResponse(data, status);
-
-    // Patch json function
-
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-  };
-
-  if (request.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
-  }
-
-  try {
-    const response = await (async () => {
   const options = handleOptions(request);
   if (options) return options;
 
@@ -231,12 +189,6 @@ Deno.serve(async (request) => {
         to: [email],
         subject: `Seu Relatório de Q.I. Nexus (${reportData.score} pts) - ${reportData.name}`,
         html: htmlContent,
-        headers: {
-          "List-Unsubscribe": "<mailto:unsubscribe@kitoexpert.online>, <https://kitoexpert.online/unsubscribe>",
-          "X-Priority": "1",
-          "X-MSMail-Priority": "High",
-          "Importance": "high",
-        },
       }),
     });
 
